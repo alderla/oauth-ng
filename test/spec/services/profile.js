@@ -45,10 +45,10 @@ describe('Profile', function() {
         });
 
         it('gets the resource', inject(function(Profile) {
-          Profile.find(params.profileUri).success(function(response) { result = response; });
+          Profile.find(params.profileUri).then(function(response) { result = response; });
           $rootScope.$apply();
           $httpBackend.flush();
-          expect(result.name).toEqual('Alice');
+          expect(result.data.name).toEqual('Alice');
         }));
 
         it('caches the profile', function() {

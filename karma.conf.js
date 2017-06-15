@@ -13,10 +13,10 @@ module.exports = function(config) {
     files: [
       'app/bower_components/jquery/jquery.js',
       'app/bower_components/angular/angular.js',
-      'app/bower_components/angular-mocks/angular-mocks.js',
       'app/bower_components/ngstorage/ngStorage.js',
       'app/bower_components/timecop/timecop-0.1.1.js',
       'app/bower_components/jsrsasign/jsrsasign-latest-all-min.js',
+      'app/bower_components/angular-mocks/angular-mocks.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'app/views/**/*.html',
@@ -51,9 +51,8 @@ module.exports = function(config) {
     // if true, it capture browsers, run tests and exit
     singleRun: false,
 
-
     // Preprocessor for converting HTML files to AngularJS templates
-    preprocessors: { 'app/views/**/*.html': ['html2js'] },
+    preprocessors: { 'app/views/**/*.html': ['ng-html2js'] },
 
     // set the path to use to search the template and set the templates module to
     // load all templates at once

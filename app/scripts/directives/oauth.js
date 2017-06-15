@@ -44,7 +44,7 @@ directives.directive('oauth', [
     };
 
     definition.link = function postLink(scope, element) {
-      scope.show = 'none';
+      scope.show = 'logged-out';
 
       scope.$watch('clientId', function() {
         init();
@@ -129,6 +129,7 @@ directives.directive('oauth', [
       };
 
       var expired = function() {
+        console.log('expired');
         $rootScope.$broadcast('oauth:expired');
         scope.logout();
       };
