@@ -571,7 +571,7 @@ accessTokenService.factory('AccessToken', ['Storage', '$rootScope', '$location',
 
 var endpointClient = angular.module('oauth.endpoint', []);
 
-endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', function($rootScope, AccessToken, $q, $http) {
+endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', '$window', function($rootScope, AccessToken, $q, $http, $window) {
 
   var service = {};
 
@@ -621,7 +621,7 @@ endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', 
   service.redirect = function(overrides) {
     var targetLocation = this.get(overrides);
     $rootScope.$broadcast('oauth:logging-in');
-    window.location.replace(targetLocation);
+    $window.location.replace(targetLocation);
   };
 
   /*
@@ -666,7 +666,7 @@ endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', 
     AccessToken.destroy();
     $rootScope.$broadcast('oauth:logging-out');
     if( params.logoutPath ) {
-      window.location.replace(buildOauthUrl(params.logoutPath, params));
+      $window.location.replace(buildOauthUrl(params.logoutPath, params));
     }
     $rootScope.$broadcast('oauth:logout');
   };
@@ -865,7 +865,7 @@ directives.directive('oauth', [
     };
 
     definition.link = function postLink(scope, element) {
-      scope.show = 'logged-out';
+      scope.show = 'none';
 
       scope.$watch('clientId', function() {
         init();
@@ -918,7 +918,11 @@ directives.directive('oauth', [
         var token = AccessToken.get();
 
         if (!token) {
-          return scope.login();
+          // already logged out
+          if (scope.show === 'logged-out') {
+            return;
+          }
+          return scope.logout();
         }  // without access token it's logged out, so we attempt to log in
         if (AccessToken.expired()) {
           return expired();
@@ -950,7 +954,6 @@ directives.directive('oauth', [
       };
 
       var expired = function() {
-        console.log('expired');
         $rootScope.$broadcast('oauth:expired');
         scope.logout();
       };

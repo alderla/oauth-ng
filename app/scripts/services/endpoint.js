@@ -2,7 +2,7 @@
 
 var endpointClient = angular.module('oauth.endpoint', []);
 
-endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', function($rootScope, AccessToken, $q, $http) {
+endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', '$window', function($rootScope, AccessToken, $q, $http, $window) {
 
   var service = {};
 
@@ -52,7 +52,7 @@ endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', 
   service.redirect = function(overrides) {
     var targetLocation = this.get(overrides);
     $rootScope.$broadcast('oauth:logging-in');
-    window.location.replace(targetLocation);
+    $window.location.replace(targetLocation);
   };
 
   /*
@@ -97,7 +97,7 @@ endpointClient.factory('Endpoint', ['$rootScope', 'AccessToken', '$q', '$http', 
     AccessToken.destroy();
     $rootScope.$broadcast('oauth:logging-out');
     if( params.logoutPath ) {
-      window.location.replace(buildOauthUrl(params.logoutPath, params));
+      $window.location.replace(buildOauthUrl(params.logoutPath, params));
     }
     $rootScope.$broadcast('oauth:logout');
   };

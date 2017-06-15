@@ -44,7 +44,7 @@ directives.directive('oauth', [
     };
 
     definition.link = function postLink(scope, element) {
-      scope.show = 'logged-out';
+      scope.show = 'none';
 
       scope.$watch('clientId', function() {
         init();
@@ -97,7 +97,11 @@ directives.directive('oauth', [
         var token = AccessToken.get();
 
         if (!token) {
-          return scope.login();
+          // already logged out
+          if (scope.show === 'logged-out') {
+            return;
+          }
+          return scope.logout();
         }  // without access token it's logged out, so we attempt to log in
         if (AccessToken.expired()) {
           return expired();
@@ -129,7 +133,6 @@ directives.directive('oauth', [
       };
 
       var expired = function() {
-        console.log('expired');
         $rootScope.$broadcast('oauth:expired');
         scope.logout();
       };

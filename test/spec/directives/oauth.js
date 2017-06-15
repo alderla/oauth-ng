@@ -241,13 +241,13 @@ describe('oauth', function() {
       expect(element.find('.logged-in').attr('class')).toMatch('ng-hide');
     });
 
-    xit('fires the oauth:loggedOut event', function() {
+    it('fires the oauth:loggedOut event', function() {
       var event = jasmine.any(Object);
       expect(callback).toHaveBeenCalledWith(event);
     });
 
-    xit('does not fire the oauth:logout event', function() {
-      expect(callback.calls.count()).toBe(1);
+    it('fire the oauth:logout event', function() {
+      expect(callback.calls.count()).toBe(2);
     });
 
     it('fires the oauth:invalid event', function () {
